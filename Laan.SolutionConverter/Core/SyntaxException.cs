@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Laan.SolutionConverter
 {
@@ -16,9 +11,7 @@ namespace Laan.SolutionConverter
             : base("Expected: '" + token + "' but found: '" + foundToken + "' at " + position.ToString()) { }
 
         public ExpectedTokenNotFoundException() : base() { }
-
         public ExpectedTokenNotFoundException(string message) : base(message) { }
-
         public ExpectedTokenNotFoundException(string message, Exception innerException) : base(message, innerException) { }
     }
 
@@ -28,7 +21,6 @@ namespace Laan.SolutionConverter
         public SyntaxException() : base() { }
         public SyntaxException(string message) : base(message) { }
         public SyntaxException(string message, Exception innerException) : base(message, innerException) { }
-
     }
 
     [Serializable]
@@ -38,21 +30,4 @@ namespace Laan.SolutionConverter
         public UnknownTokenException(string message) : base("'" + message + "'") { }
         public UnknownTokenException(string message, Exception innerException) : base(message, innerException) { }
     }
-
-    [Serializable]
-    public class ParserNotImplementedException : Exception
-    {
-        public ParserNotImplementedException() : base() { }
-        public ParserNotImplementedException(string message) : base(message) { }
-        public ParserNotImplementedException(string message, Exception innerException) : base(message, innerException) { }
-    }
-
-    [Serializable]
-    public class FormatterNotImplementedException : Exception
-    {
-        public FormatterNotImplementedException() : base() { }
-        public FormatterNotImplementedException(string message) : base(message) { }
-        public FormatterNotImplementedException(string message, Exception innerException) : base(message, innerException) { }
-    }
-
 }

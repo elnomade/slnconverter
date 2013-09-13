@@ -56,19 +56,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BracketStructure.cs" />
-    <Compile Include="CandidateDefinition.cs" />
-    <Compile Include="CustomTokenizer.cs" />
-    <Compile Include="ITokenizer.cs" />
-    <Compile Include="Position.cs" />
+    <Compile Include="Core\BracketStructure.cs" />
+    <Compile Include="Core\CandidateDefinition.cs" />
+    <Compile Include="Core\CustomParser.cs" />
+    <Compile Include="Core\CustomTokenizer.cs" />
+    <Compile Include="Core\ITokenizer.cs" />
+    <Compile Include="Core\Position.cs" />
+    <Compile Include="Documents\GlobalSection.cs" />
+    <Compile Include="Documents\Project.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegexTokenizer.cs" />
-    <Compile Include="SlnTokenizer.cs" />
-    <Compile Include="SyntaxException.cs" />
-    <Compile Include="Token.cs" />
-    <Compile Include="TokenDefinition.cs" />
-    <Compile Include="TokenType.cs" />
+    <Compile Include="Core\RegexTokenizer.cs" />
+    <Compile Include="Core\SlnTokenizer.cs" />
+    <Compile Include="Documents\SolutionDocument.cs" />
+    <Compile Include="Parsers\SolutionParser.cs" />
+    <Compile Include="Core\SyntaxException.cs" />
+    <Compile Include="Core\Token.cs" />
+    <Compile Include="Core\TokenDefinition.cs" />
+    <Compile Include="Core\TokenType.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

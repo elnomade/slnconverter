@@ -13,6 +13,7 @@ namespace Laan.SolutionConverter
     {
         None,
         WhiteSpace,
+        Version,
         Numeric,
         AlphaNumeric,
         Variable,

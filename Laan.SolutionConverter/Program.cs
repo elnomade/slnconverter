@@ -30,14 +30,10 @@ namespace Laan.SolutionConverter
                 tokenizer.Initialise();
                 tokenizer.SetSkip(true, TokenType.WhiteSpace);
 
-                while (tokenizer.HasMoreTokens)
-                {
-                    Token current = tokenizer.Current;
-                    string value = current.Type == TokenType.NewLine ? "CRLF" : current.Value;
+                SolutionParser solutionParser = new SolutionParser(tokenizer);
 
-                    Console.WriteLine(String.Format("{0,-20}| {1}", current.Type, value));
-                    tokenizer.ReadNextToken();
-                }
+                var solutionDocument = solutionParser.Execute();
+                Console.WriteLine("Done...");
             }
             catch (Exception exception)
             {
