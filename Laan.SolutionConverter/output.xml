@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<solution version="12" visualStudioVersion="Visual Studio 2013">
+  <headers>
+    <header name="VisualStudioVersion" value="12.0.20623.1 VSUPREVIEW" />
+    <header name="MinimumVisualStudioVersion" value="10.0.40219.1" />
+  </headers>
+  <!-- Solution Properties -->
+  <properties>
+    <property name="HideSolutionNode" value="FALSE" />
+  </properties>
+  <!-- Solution Configuration -->
+  <configurations>
+    <configuration name="Debug|Any CPU"   value="Debug|Any CPU"/>
+    <configuration name="Debug|Any CPU"   value="Debug|Any CPU"/>
+    <configuration name="Release|Any CPU" value="Release|Any CPU"/>
+    <configuration name="Release|Any CPU" value="Release|Any CPU"/>
+  </configurations>
+  <items>
+    <folder name="Folder 1.0">
+      <folder name="Folder 1.1">
+        <project name="Laan.SolutionConverter" location="Laan.SolutionConverter\Laan.SolutionConverter.csproj" type="Windows (C#)">
+          <configurations>
+            <configuration name="Debug|Any CPU.ActiveCfg"   value="Debug|Any CPU"/>
+            <configuration name="Debug|Any CPU.Build.0"     value="Debug|Any CPU"/>
+            <configuration name="Release|Any CPU.ActiveCfg" value="Release|Any CPU"/>
+            <configuration name="Release|Any CPU.Build.0"   value="Release|Any CPU"/>
+          </configurations>
+        </project>
+      </folder>
+    </folder>
+  </items>
+</solution>

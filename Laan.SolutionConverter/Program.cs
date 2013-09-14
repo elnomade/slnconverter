@@ -19,6 +19,11 @@ namespace Laan.SolutionConverter
                 throw new ArgumentException("file must be a VS solution file (.sln)");
         }
 
+        private static string ConvertInput(string path)
+        {
+            return Path.GetFileNameWithoutExtension(path) + ".xml";
+        }
+
         private static void Main(string[] args)
         {
             try
@@ -32,7 +37,12 @@ namespace Laan.SolutionConverter
 
                 SolutionParser solutionParser = new SolutionParser(tokenizer);
 
-                var solutionDocument = solutionParser.Execute();
+                var document = solutionParser.Execute();
+
+                var converter = new Converter();
+                string outputName = args.Skip(1).FirstOrDefault() ?? ConvertInput(path);
+                converter.WriteDocument(document, outputName);
+
                 Console.WriteLine("Done...");
             }
             catch (Exception exception)

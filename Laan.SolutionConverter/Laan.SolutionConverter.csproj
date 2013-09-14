@@ -74,6 +74,10 @@
     <Compile Include="Core\Token.cs" />
     <Compile Include="Core\TokenDefinition.cs" />
     <Compile Include="Core\TokenType.cs" />
+    <Compile Include="Xml\NameValue.cs" />
+    <Compile Include="Xml\SolutionFolder.cs" />
+    <Compile Include="Xml\SolutionProject.cs" />
+    <Compile Include="Xml\Solution.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -91,6 +95,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="output.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,10 +6,8 @@ namespace Laan.SolutionConverter
 {
     public class BracketStructure : IDisposable
     {
-        // Fields
         private ITokenizer _tokenizer;
 
-        // Methods
         public BracketStructure(ITokenizer tokenizer)
         {
             this._tokenizer = tokenizer;

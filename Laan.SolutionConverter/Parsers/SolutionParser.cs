@@ -60,8 +60,8 @@ namespace Laan.SolutionConverter
             document.VisualStudioVersion = ReadString().Replace("# ", "");
 
             _tokenizer.SetSkip(true, TokenType.WhiteSpace);
-            
             ReadNextToken();
+
             while (!Tokenizer.IsNextToken("Project") && Tokenizer.Current.Type != TokenType.NewLine)
             {
                 ReadNameValuePair(document.Info);
