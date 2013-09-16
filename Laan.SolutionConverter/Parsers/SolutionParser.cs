@@ -68,6 +68,13 @@ namespace Laan.SolutionConverter
             }
         }
 
+        private void ParseProjectSection(Project project)
+        {
+            var projectSection = ParseSection<ProjectSection>("EndProjectSection");
+            if (projectSection != null)
+                project.Section = projectSection;
+        }
+
         private void ParseProjects(SolutionDocument document)
         {
             while (Tokenizer.TokenEquals("Project"))
@@ -88,6 +95,10 @@ namespace Laan.SolutionConverter
 
                 document.Projects.Add(project);
                 ReadNextToken();
+
+                if (Tokenizer.TokenEquals("ProjectSection"))
+                    ParseProjectSection(project);
+
                 ExpectToken("EndProject");
                 ReadNextToken();
             }
@@ -99,33 +110,37 @@ namespace Laan.SolutionConverter
             {
                 ReadNextToken();
 
-                while (Tokenizer.IsNextToken("GlobalSection"))
+                while (Tokenizer.TokenEquals("GlobalSection"))
                 {
                     ParseGlobalSection(document);
                 }
             }
         }
 
-        private void ParseGlobalSection(SolutionDocument document)
+        private T ParseSection<T>(string endSectionToken) where T : Section, new()
         {
-            ReadNextToken();
-
-            var global = new GlobalSection();
+            var section = new T();
 
             ExpectToken("(");
-            global.Name = ReadString();
+            section.Name = ReadString();
             ExpectToken(")");
 
             ExpectToken("=");
 
-            global.Timing = ReadString();
+            section.Timing = ReadString();
             ReadNextToken();
 
-            while (!Tokenizer.TokenEquals("EndGlobalSection"))
-                ReadNameValuePair(global.Info);
+            while (!Tokenizer.TokenEquals(endSectionToken))
+                ReadNameValuePair(section.Info);
 
             ReadNextToken();
 
+            return section;
+        }
+
+        private void ParseGlobalSection(SolutionDocument document)
+        {
+            var global = ParseSection<GlobalSection>("EndGlobalSection");
             document.GlobalSections.Add(global);
         }
 

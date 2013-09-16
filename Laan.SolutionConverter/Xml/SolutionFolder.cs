@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace Laan.SolutionConverter.Xml
 {
     [Serializable]
-    public class SolutionFolder
+    public class SolutionFolder : SolutionItem
     {
         /// <summary>
         /// Initializes a new instance of the SolutionFolder class.
@@ -16,6 +16,9 @@ namespace Laan.SolutionConverter.Xml
             Folders = new List<SolutionFolder>();
             Projects = new List<SolutionProject>();
         }
+
+        [XmlAttribute("name")]
+        public string Name { get; set; }
 
         [XmlElement("folder")]
         public List<SolutionFolder> Folders { get; set; }

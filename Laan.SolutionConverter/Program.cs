@@ -21,7 +21,7 @@ namespace Laan.SolutionConverter
 
         private static string ConvertInput(string path)
         {
-            return Path.GetFileNameWithoutExtension(path) + ".xml";
+            return String.Format(".\\{0}.xml", Path.GetFileNameWithoutExtension(path));
         }
 
         private static void Main(string[] args)

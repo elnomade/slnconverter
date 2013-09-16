@@ -6,13 +6,12 @@ using System.Linq;
 
 namespace Laan.SolutionConverter
 {
-    [DebuggerDisplay("GlobalSection({Name}) = {Timing}")]
-    public class GlobalSection
+    public abstract class Section
     {
         /// <summary>
         /// Initializes a new instance of the GlobalSection class.
         /// </summary>
-        public GlobalSection()
+        public Section()
         {
             Info = new Dictionary<string, string>();
         }
@@ -20,5 +19,15 @@ namespace Laan.SolutionConverter
         public string Name { get; set; }
         public string Timing { get; set; } // Pre / Post
         public Dictionary<string, string> Info { get; set; }
+    }
+
+    [DebuggerDisplay("GlobalSection({Name}) = {Timing}")]
+    public class GlobalSection : Section
+    {
+    }
+
+    [DebuggerDisplay("ProjectSection({Name}) = {Timing}")]
+    public class ProjectSection : Section
+    {
     }
 }

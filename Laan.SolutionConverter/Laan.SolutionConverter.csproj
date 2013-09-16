@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter.cs" />
     <Compile Include="Core\BracketStructure.cs" />
     <Compile Include="Core\CandidateDefinition.cs" />
     <Compile Include="Core\CustomParser.cs" />
@@ -74,8 +75,10 @@
     <Compile Include="Core\Token.cs" />
     <Compile Include="Core\TokenDefinition.cs" />
     <Compile Include="Core\TokenType.cs" />
+    <Compile Include="Utils\XmlExtensions.cs" />
     <Compile Include="Xml\NameValue.cs" />
     <Compile Include="Xml\SolutionFolder.cs" />
+    <Compile Include="Xml\SolutionItem.cs" />
     <Compile Include="Xml\SolutionProject.cs" />
     <Compile Include="Xml\Solution.cs" />
   </ItemGroup>
