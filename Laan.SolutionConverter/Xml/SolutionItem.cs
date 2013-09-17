@@ -16,6 +16,14 @@ namespace Laan.SolutionConverter.Xml
         {
         }
 
+        public void AddConfiguration(string config, string value)
+        {
+            if (Configurations == null)
+                Configurations = new List<NameValue>();
+
+            Configurations.Add(new NameValue { Name = config, Value = value });
+        }
+        
         [XmlIgnore]//[XmlAttribute("id")]
         public string Id { get; set; }
 
