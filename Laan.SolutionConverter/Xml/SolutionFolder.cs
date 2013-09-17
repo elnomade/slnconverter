@@ -17,9 +17,6 @@ namespace Laan.SolutionConverter.Xml
             Projects = new List<SolutionProject>();
         }
 
-        [XmlAttribute("name")]
-        public string Name { get; set; }
-
         [XmlElement("folder")]
         public List<SolutionFolder> Folders { get; set; }
 
