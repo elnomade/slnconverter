@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 using CommandLine;
 using CommandLine.Text;
-using System.Reflection;
 
 namespace Laan.SolutionConverter
 {
@@ -25,7 +25,7 @@ namespace Laan.SolutionConverter
 
     public class Program
     {
-        private static void VerifyPath(string path)
+        private static void VerifyPath(string path, string extension)
         {
             if (String.IsNullOrEmpty(path))
                 throw new ArgumentException("file not supplied as an argument");
@@ -33,8 +33,8 @@ namespace Laan.SolutionConverter
             if (!File.Exists(path))
                 throw new ArgumentException("file not found");
 
-            if (Path.GetExtension(path) != ".sln")
-                throw new ArgumentException("file must be a VS solution file (.sln)");
+            if (Path.GetExtension(path) != "." + extension)
+                throw new ArgumentException(String.Format("file must be a VS solution file (.{0})", extension));
         }
 
         private static string ConvertInput(string path)
@@ -45,7 +45,7 @@ namespace Laan.SolutionConverter
         private static void ConvertToXml(Options options)
         {
             string path = options.InputFile;
-            VerifyPath(path);
+            VerifyPath(path, "sln");
 
             var tokenizer = new SlnTokenizer(File.ReadAllText(path));
             tokenizer.Initialise();
@@ -63,7 +63,13 @@ namespace Laan.SolutionConverter
 
         private static void ConvertToSln(Options options)
         {
-            Console.WriteLine("Not implemented");
+            string path = options.InputFile;
+            VerifyPath(path, "xml");
+
+            var converter = new XmlToSlnConverter();
+            string outputName = !String.IsNullOrEmpty(options.OutputFile) ? options.OutputFile : ConvertInput(path);
+            converter.WriteDocument(path, outputName);
+            Console.WriteLine("Done...");
         }
 
         private static void Main(string[] args)

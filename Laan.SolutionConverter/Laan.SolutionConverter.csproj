@@ -81,6 +81,8 @@
     <Compile Include="Core\TokenDefinition.cs" />
     <Compile Include="Core\TokenType.cs" />
     <Compile Include="Utils\XmlExtensions.cs" />
+    <Compile Include="XmlToSlnConverter.cs" />
+    <Compile Include="Xml\NameValueItem.cs" />
     <Compile Include="Xml\NameValue.cs" />
     <Compile Include="Xml\SolutionFolder.cs" />
     <Compile Include="Xml\SolutionItem.cs" />

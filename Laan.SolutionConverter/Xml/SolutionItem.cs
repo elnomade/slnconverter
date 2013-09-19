@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using System.Runtime.Serialization;
 
 namespace Laan.SolutionConverter.Xml
 {
@@ -16,21 +15,27 @@ namespace Laan.SolutionConverter.Xml
         {
         }
 
-        public void AddConfiguration(string config, string value)
+        public void AddConfiguration(string name, string when, string config, string value)
         {
-            if (Configurations == null)
-                Configurations = new List<NameValue>();
+            if (Configuration == null)
+                Configuration = new NameValueItem() { Name = name, When = when };
 
-            Configurations.Add(new NameValue { Name = config, Value = value });
+            Configuration.AddItem(config, value);
         }
-        
-        [XmlIgnore]//[XmlAttribute("id")]
-        public string Id { get; set; }
 
         [XmlAttribute("name")]
         public string Name { get; set; }
 
-        [XmlArray("configurations"), XmlArrayItem("configuration")]
-        public List<NameValue> Configurations { get; set; }
+        [XmlAttribute("id")]
+        public string Id { get; set; }
+
+        [XmlElement("location")]
+        public string Location { get; set; }
+
+        [XmlAttribute("type")]
+        public string Type { get; set; }
+
+        [XmlElement("configurations")]
+        public NameValueItem Configuration { get; set; }
     }
 }

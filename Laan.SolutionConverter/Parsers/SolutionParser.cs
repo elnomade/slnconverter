@@ -127,7 +127,7 @@ namespace Laan.SolutionConverter
 
             ExpectToken("=");
 
-            section.Timing = ReadString();
+            section.When = ReadString();
             ReadNextToken();
 
             while (!Tokenizer.TokenEquals(endSectionToken))

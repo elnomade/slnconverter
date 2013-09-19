@@ -14,9 +14,7 @@ namespace Laan.SolutionConverter.Xml
         /// </summary>
         public Solution()
         {
-            Properties = new List<NameValue>();
-            Headers = new List<NameValue>();
-            Configurations = new List<NameValue>();
+            Sections = new List<NameValueItem>();
             Items = new SolutionFolder();
         }
 
@@ -26,16 +24,13 @@ namespace Laan.SolutionConverter.Xml
         [XmlAttribute("visualStudioVersion")]
         public string VisualStudioVersion { get; set; }
 
-        [XmlArray("properties"), XmlArrayItem("property")]
-        public List<NameValue> Properties { get; set; }
-
         [XmlArray("headers"), XmlArrayItem("header")]
         public List<NameValue> Headers { get; set; }
 
-        [XmlArray("configurations"), XmlArrayItem("configuration")]
-        public List<NameValue> Configurations { get; set; }
-
         [XmlElement("items")]
         public SolutionFolder Items { get; set; }
+
+        [XmlArray("sections"), XmlArrayItem("section")]
+        public List<NameValueItem> Sections { get; set; }
     }
 }

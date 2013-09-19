@@ -1,16 +1,29 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace Laan.SolutionConverter.Utils
 {
+    public static class EnumerableExtensions
+    {
+        public static IEnumerable<T> Recurse<T>(this IEnumerable<T> enumerable, Func<T, IEnumerable<T>> childNodesGenerator)
+        {
+            foreach (T item in enumerable)
+            {
+                foreach (T childNode in childNodesGenerator(item).Recurse(childNodesGenerator))
+                {
+                    yield return childNode;
+                }
+                yield return item;
+            }
+        }
+    }
+        
     public static class XmlExtensions
     {
         /// <summary>

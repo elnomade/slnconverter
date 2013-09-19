@@ -1,18 +1,31 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Serialization;
-using System.Runtime.Serialization;
 
 namespace Laan.SolutionConverter.Xml
 {
     [Serializable]
+    public class ProjectDependency
+    {
+        [XmlElement("project")]
+        public string Name { get; set; }
+    }
+
+    [Serializable]
+    [DebuggerDisplay("Project: {Name}")]
     public class SolutionProject : SolutionItem
     {
-        [XmlElement("location")]
-        public string Location { get; set; }
+        public void AddDependency(string value)
+        {
+            if (Dependencies == null)
+                Dependencies = new List<ProjectDependency>();
 
-        [XmlElement("type")]
-        public string Type { get; set; }
+            Dependencies.Add(new ProjectDependency { Name = value });
+        }
+
+        [XmlElement("dependsOn")]
+        public List<ProjectDependency> Dependencies { get; set; }
     }
 }

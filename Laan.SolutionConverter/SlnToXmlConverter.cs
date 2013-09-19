@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Laan.SolutionConverter.Xml;
 using Laan.SolutionConverter.Utils;
+using Laan.SolutionConverter.Xml;
 
 namespace Laan.SolutionConverter
 {
     public class SlnToXmlConverter
     {
-        const string FolderTypeId = "{2150E333-8FDC-42A3-9474-1A3956D46DE8}";
+        public const string FolderTypeId = "{2150E333-8FDC-42A3-9474-1A3956D46DE8}";
 
         private SolutionProject ConvertTo(Project project)
         {
@@ -38,16 +38,27 @@ namespace Laan.SolutionConverter
                 VisualStudioVersion = document.VisualStudioVersion
             };
 
-            foreach (var info in document.Info)
-                solution.Headers.Add(new NameValue { Name = info.Key, Value = info.Value });
+            if (document.Info.Any())
+            {
+                solution.Headers = new List<NameValue>();
+                foreach (var info in document.Info)
+                    solution.Headers.Add(new NameValue { Name = info.Key, Value = info.Value });
+            }
 
-            var configurations = document.GlobalSections.FirstOrDefault(gs => gs.Name == "SolutionConfigurationPlatforms");
-            if (configurations != null)
-                solution.Configurations.AddRange(configurations.Info.Select(i => new NameValue { Name = i.Key, Value = i.Value }));
+            var ignored = new[] { "ProjectConfigurationPlatforms", "NestedProjects" };
 
-            var solutionProperties = document.GlobalSections.FirstOrDefault(gs => gs.Name == "SolutionProperties");
-            if (solutionProperties != null)
-                solution.Properties.AddRange(solutionProperties.Info.Select(i => new NameValue { Name = i.Key, Value = i.Value }));
+            foreach (var globalSection in document.GlobalSections.Where(p => !ignored.Contains(p.Name)))
+            {
+                if (!globalSection.Info.Any())
+                    continue;
+
+                var sectionItem = new NameValueItem { Name = globalSection.Name, When = globalSection.When };
+
+                foreach (var item in globalSection.Info)
+                    sectionItem.AddItem(item.Key, item.Value);
+
+                solution.Sections.Add(sectionItem);
+            }
             
             return solution;
         }
@@ -61,7 +72,7 @@ namespace Laan.SolutionConverter
 
                 var config = info.Key.Replace(project.Id + ".", "");
 
-                project.AddConfiguration(config, info.Value);
+                project.AddConfiguration(projectionConfigurations.Name, projectionConfigurations.When, config, info.Value);
             }
         }
 
@@ -77,7 +88,16 @@ namespace Laan.SolutionConverter
                 return projects;
 
             foreach (var project in projects)
+            {
                 CreateProjectConfiguration(configurations, project);
+
+                var documentProject = solution.Projects.First(p => p.Id == project.Id);
+                if (documentProject.Section == null || documentProject.Section.Name != "ProjectDependencies")
+                    continue;
+
+                foreach (var info in documentProject.Section.Info)
+                    project.AddDependency(solution.Projects.First(p => p.Id == info.Value).Name);
+            }
 
             return projects;
         }
@@ -107,15 +127,17 @@ namespace Laan.SolutionConverter
             foreach (var folder in folders)
             {
                 var documentProject = document.Projects.First(p => p.Id == folder.Id);
-                if (documentProject.Section != null)
-                {
-                    foreach (var info in documentProject.Section.Info)
-                    {
-                        if (folder.Configurations == null)
-                            folder.Configurations = new List<NameValue>();
+                if (documentProject.Section == null)
+                    continue;
 
-                        folder.AddConfiguration(info.Key, info.Value);
-                    }
+                foreach (var info in documentProject.Section.Info)
+                {
+                    folder.AddConfiguration(
+                        documentProject.Section.Name,
+                        documentProject.Section.When,
+                        info.Key,
+                        info.Value
+                    );
                 }
             }
         }

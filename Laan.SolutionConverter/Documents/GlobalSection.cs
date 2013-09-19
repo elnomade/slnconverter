@@ -17,7 +17,7 @@ namespace Laan.SolutionConverter
         }
 
         public string Name { get; set; }
-        public string Timing { get; set; } // Pre / Post
+        public string When { get; set; } // Pre / Post
         public Dictionary<string, string> Info { get; set; }
     }
 
