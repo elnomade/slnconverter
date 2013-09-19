@@ -5,6 +5,7 @@ using System.Linq;
 
 using Laan.SolutionConverter.Utils;
 using Laan.SolutionConverter.Xml;
+using System.Text;
 
 namespace Laan.SolutionConverter
 {
@@ -14,7 +15,7 @@ namespace Laan.SolutionConverter
 
         private string GetProjectsOutput(SolutionItem item)
         {
-            var output = new System.Text.StringBuilder();
+            var output = new StringBuilder();
 
             output.AppendFormat("Project(\"{0}\") = \"{1}\", \"{2}\", \"{3}\"\n", item.Type ?? SlnToXmlConverter.FolderTypeId, item.Name, item.Location ?? item.Name, item.Id);
 
@@ -43,9 +44,47 @@ namespace Laan.SolutionConverter
             }
         }
 
+        private void OutputNestedProjects(Solution solution, StringBuilder output)
+        {
+            var pairs = new List<Tuple<SolutionItem, SolutionItem>>();
+            AddPairs(pairs, solution.Items);
+
+            if (!pairs.Any())
+                return;
+
+            output.AppendLine("\tGlobalSection(NestedProjects) = preSolution");
+            foreach (var pair in pairs.Where(p => p.Item2.Id != null))
+            {
+                output.AppendFormat("\t\t{0} = {1}\n", pair.Item1.Id, pair.Item2.Id);
+            }
+            output.AppendLine("\tEndGlobalSection");
+        }
+
+        private void OutputProjectsConfigurations(Solution solution, StringBuilder output)
+        {
+            var projects = solution.Items.Folders
+                .Recurse(p => p.Folders)
+                .SelectMany(f => f.Projects)
+                .Union(solution.Items.Projects)
+                .ToList();
+
+            if (!projects.Any())
+                return;
+
+            output.AppendLine("\tGlobalSection(ProjectConfigurationPlatforms) = postSolution");
+            foreach (SolutionProject project in projects)
+            {
+                foreach (var config in project.Configuration.Items)
+                {
+                    output.AppendFormat("\t\t{0}.{1} = {2}\n", project.Id, config.Name, config.Value);
+                }
+            }
+            output.AppendLine("\tEndGlobalSection");
+        }
+
         private string GetSectionsOutput(Solution solution)
         {
-            var output = new System.Text.StringBuilder();
+            var output = new StringBuilder();
 
             output.AppendLine("Global");
 
@@ -59,21 +98,11 @@ namespace Laan.SolutionConverter
                 output.AppendLine("\tEndGlobalSection");
             }
 
-            var pairs = new List<Tuple<SolutionItem, SolutionItem>>();
-
-            AddPairs(pairs, solution.Items);
-
-            if (pairs.Any())
-            {
-                output.AppendLine("\tGlobalSection(NestedProjects) = preSolution");
-                foreach (var pair in pairs.Where(p => p.Item2.Id != null))
-                {
-                    output.AppendFormat("\t\t{0} = {1}\n", pair.Item1.Id, pair.Item2.Id);
-                }
-                output.AppendLine("\tEndGlobalSection");
-            }
+            OutputNestedProjects(solution, output);
+            OutputProjectsConfigurations(solution, output);
 
             output.Append("EndGlobal");
+
             return output.ToString();
         }
 
