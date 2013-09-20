@@ -57,8 +57,6 @@ namespace Laan.SolutionConverter
             var converter = new SlnToXmlConverter();
             string outputName = !String.IsNullOrEmpty(options.OutputFile) ? options.OutputFile : ConvertInput(path);
             converter.WriteDocument(document, outputName);
-            
-            Console.WriteLine("Done...");
         }
 
         private static void ConvertToSln(Options options)
@@ -68,8 +66,8 @@ namespace Laan.SolutionConverter
 
             var converter = new XmlToSlnConverter();
             string outputName = !String.IsNullOrEmpty(options.OutputFile) ? options.OutputFile : ConvertInput(path);
+
             converter.WriteDocument(path, outputName);
-            Console.WriteLine("Done...");
         }
 
         private static void Main(string[] args)
@@ -101,7 +99,6 @@ namespace Laan.SolutionConverter
             {
                 Console.WriteLine(exception);
             }
-            Console.Read();
         }
     }
 }
